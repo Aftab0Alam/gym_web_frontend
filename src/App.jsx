@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import Dashboard from './components/Dashboard';
 import NewMemberForm from './components/NewMemberForm';
@@ -13,7 +12,6 @@ const App = () => {
   const { theme, toggleTheme } = useTheme();
   const [view, setView] = useState('dashboard');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); // ✅ hamburger state
 
   // ✅ Login check on page load
   useEffect(() => {
@@ -47,139 +45,63 @@ const App = () => {
           : 'bg-gray-100 text-gray-900'
       }`}
     >
-      {/* ✅ Header */}
+      {/* Header */}
       <header
         className={`p-4 shadow-lg ${
           theme === 'dark' ? 'bg-gray-800' : 'bg-white'
         }`}
       >
-        <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
-              🏋️ GYM ADMIN PANEL
-            </h1>
-
-            {/* ✅ Hamburger Icon (mobile) */}
+        <div className="flex justify-between items-center max-w-7xl mx-auto">
+          <h1 className="text-2xl font-bold text-indigo-600 dark:text-indigo-400">
+            🏋️ GYM ADMIN PANEL
+          </h1>
+          <nav className="space-x-2 flex items-center">
             <button
-              className="md:hidden text-2xl focus:outline-none"
-              onClick={() => setMenuOpen(!menuOpen)}
+              onClick={() => setView('dashboard')}
+              className={buttonClass(view === 'dashboard')}
             >
-              {menuOpen ? '✕' : '☰'}
+              Dashboard
+            </button>
+            <button
+              onClick={() => setView('addMember')}
+              className={buttonClass(view === 'addMember')}
+            >
+              Add New Member
+            </button>
+            <button
+              onClick={() => setView('scanner')}
+              className={buttonClass(view === 'scanner')}
+            >
+              Attendance Scanner
+            </button>
+            <button
+              onClick={() => setView('payment')}
+              className={buttonClass(view === 'payment')}
+            >
+              Record Payment
+            </button>
+            <button
+              onClick={() => setView('members')}
+              className={buttonClass(view === 'members')}
+            >
+              Manage Members
             </button>
 
-            {/* ✅ Desktop Nav */}
-            <nav className="hidden md:flex space-x-2 items-center">
-              <button
-                onClick={() => setView('dashboard')}
-                className={buttonClass(view === 'dashboard')}
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => setView('addMember')}
-                className={buttonClass(view === 'addMember')}
-              >
-                Add New Member
-              </button>
-              <button
-                onClick={() => setView('scanner')}
-                className={buttonClass(view === 'scanner')}
-              >
-                Attendance Scanner
-              </button>
-              <button
-                onClick={() => setView('payment')}
-                className={buttonClass(view === 'payment')}
-              >
-                Record Payment
-              </button>
-              <button
-                onClick={() => setView('members')}
-                className={buttonClass(view === 'members')}
-              >
-                Manage Members
-              </button>
+            {/* Theme Toggle */}
+            <ThemeToggleButton toggleTheme={toggleTheme} />
 
-              {/* Theme Toggle */}
-              <ThemeToggleButton toggleTheme={toggleTheme} />
-
-              {/* Logout Button */}
-              <button
-                onClick={handleLogout}
-                className="ml-3 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-              >
-                Logout
-              </button>
-            </nav>
-          </div>
-
-          {/* ✅ Mobile Menu (Dropdown) */}
-          {menuOpen && (
-            <nav className="flex flex-col md:hidden mt-4 space-y-2">
-              <button
-                onClick={() => {
-                  setView('dashboard');
-                  setMenuOpen(false);
-                }}
-                className={buttonClass(view === 'dashboard')}
-              >
-                Dashboard
-              </button>
-              <button
-                onClick={() => {
-                  setView('addMember');
-                  setMenuOpen(false);
-                }}
-                className={buttonClass(view === 'addMember')}
-              >
-                Add New Member
-              </button>
-              <button
-                onClick={() => {
-                  setView('scanner');
-                  setMenuOpen(false);
-                }}
-                className={buttonClass(view === 'scanner')}
-              >
-                Attendance Scanner
-              </button>
-              <button
-                onClick={() => {
-                  setView('payment');
-                  setMenuOpen(false);
-                }}
-                className={buttonClass(view === 'payment')}
-              >
-                Record Payment
-              </button>
-              <button
-                onClick={() => {
-                  setView('members');
-                  setMenuOpen(false);
-                }}
-                className={buttonClass(view === 'members')}
-              >
-                Manage Members
-              </button>
-
-              <div className="flex justify-between items-center pt-2">
-                <ThemeToggleButton toggleTheme={toggleTheme} />
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    setMenuOpen(false);
-                  }}
-                  className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                >
-                  Logout
-                </button>
-              </div>
-            </nav>
-          )}
+            {/* Logout Button */}
+            <button
+              onClick={handleLogout}
+              className="ml-3 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+            >
+              Logout
+            </button>
+          </nav>
         </div>
       </header>
 
-      {/* ✅ Main View */}
+      {/* Main View */}
       <main className="max-w-7xl mx-auto pt-8 pb-12">
         {view === 'dashboard' && <Dashboard />}
         {view === 'addMember' && <NewMemberForm />}
