@@ -2,48 +2,45 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 🌐 Global Base Styles */
+/* ✅ Global smooth font & transitions */
 html {
   scroll-behavior: smooth;
 }
 
 body {
-  @apply bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100 font-inter;
-  margin: 0;
-  padding: 0;
+  /* Removed invalid @apply for font */
+  background-color: #f3f4f6;
+  color: #111827;
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-/* 🌈 Responsive Container */
-.container {
-  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+/* ✅ Dark mode */
+.dark body {
+  background-color: #111827;
+  color: #f3f4f6;
 }
 
-/* 🧩 Card Design */
-.card {
-  @apply p-4 sm:p-6 md:p-8 rounded-2xl shadow-lg bg-white dark:bg-gray-800 transition-all duration-300;
+/* ✅ Navbar hover animation */
+.nav-link {
+  @apply relative font-medium text-gray-800 dark:text-gray-200;
 }
 
-/* 📱 Responsive Table */
-.responsive-table {
-  @apply overflow-x-auto w-full;
+.nav-link::after {
+  content: "";
+  @apply absolute left-0 bottom-0 w-0 h-[2px] bg-indigo-500 transition-all duration-300;
 }
 
-/* ✏️ Form Inputs */
-.input {
-  @apply w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg 
-         focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 
-         dark:bg-gray-700 dark:text-white;
+.nav-link:hover::after {
+  @apply w-full;
 }
 
-/* 🔘 Buttons */
-.btn {
-  @apply px-4 py-2 rounded-lg font-semibold transition-all duration-300;
+/* ✅ Responsive mobile menu animation */
+.mobile-menu {
+  @apply transition-all duration-300 ease-in-out overflow-hidden;
 }
 
-.btn-primary {
-  @apply bg-indigo-600 text-white hover:bg-indigo-700;
-}
-
-.btn-outline {
-  @apply border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white;
+/* ✅ Card hover glow */
+.card-hover {
+  @apply transition-transform transform hover:scale-105 hover:shadow-lg;
 }
