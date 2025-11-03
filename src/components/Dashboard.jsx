@@ -26,7 +26,6 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        // ✅ Use the correct API endpoint with env variable
         const response = await axios.get(`${API_BASE_URL}/api/dashboard/stats`);
         setStats(response.data);
       } catch (err) {
@@ -46,71 +45,74 @@ const Dashboard = () => {
   const { memberStats, financialStats, attendanceStats, alerts } = stats;
 
   return (
-    <div className="p-6 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
-      
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
-          Admin Dashboard Overview
-        </h1>
-      </div>
-
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        {renderStatCard("Total Members", memberStats.totalMembers, "bg-blue-600 dark:bg-blue-700")}
-        {renderStatCard("Active Members", memberStats.activeMembers, "bg-green-600 dark:bg-green-700")}
-        {renderStatCard("Expired Members", memberStats.expiredMembers, "bg-red-600 dark:bg-red-700")}
-        {renderStatCard("Daily Check-ins (Today)", attendanceStats.dailyAttendanceCount, "bg-yellow-600 dark:bg-yellow-700")}
-      </div>
-
-      {/* Two Main Panels */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-
-        {/* ✅ Monthly Income Overview */}
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg"> 
-          <h2 className="text-2xl font-semibold mb-4 border-b pb-2 dark:border-gray-700">
-            Monthly Income Overview
-          </h2>
-          <p className="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400">
-            ₹{financialStats.totalMonthlyIncome.toLocaleString('en-IN')}
-          </p>
-          <p className="text-gray-500 mt-2 dark:text-gray-400">
-            Revenue collected this month (Cash Only)
-          </p>
-
-          {/* ✅ PDF Export Component */}
-          <ReportExporter stats={stats} />
+    
+    
+      <div className="p-6 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 min-h-screen">
+        
+        {/* Header */}
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+            Admin Dashboard Overview
+          </h1>
         </div>
 
-        {/* 🔔 Upcoming Renewals */}
-        <div className="bg-orange-100 dark:bg-orange-900/30 p-6 rounded-lg shadow-lg border-l-4 border-orange-500">
-          <h2 className="text-2xl font-semibold mb-4 text-orange-800 dark:text-orange-400">
-            Alerts: Upcoming Renewals
-          </h2>
-          {alerts.upcomingRenewals.length > 0 ? (
-            <ul className="space-y-3">
-              {alerts.upcomingRenewals.slice(0, 3).map(alert => (
-                <li key={alert.memberId} className="p-3 bg-white dark:bg-gray-700 rounded-md shadow-sm text-gray-700 dark:text-gray-200">
-                  <p className="font-medium">{alert.name} ({alert.memberId})</p>
-                  <p className="text-sm text-orange-500">
-                    Due: {new Date(alert.renewalDate).toDateString()} (WhatsApp Alert Sent)
-                  </p>
-                </li>
-              ))}
-              {alerts.upcomingRenewals.length > 3 && (
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  +{alerts.upcomingRenewals.length - 3} more...
-                </p>
-              )}
-            </ul>
-          ) : (
-            <p className="text-gray-600 dark:text-gray-400">
-              No renewals due in the next 7 days. Good job!
+        {/* Stat Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          {renderStatCard("Total Members", memberStats.totalMembers, "bg-blue-600 dark:bg-blue-700")}
+          {renderStatCard("Active Members", memberStats.activeMembers, "bg-green-600 dark:bg-green-700")}
+          {renderStatCard("Expired Members", memberStats.expiredMembers, "bg-red-600 dark:bg-red-700")}
+          {renderStatCard("Daily Check-ins (Today)", attendanceStats.dailyAttendanceCount, "bg-yellow-600 dark:bg-yellow-700")}
+        </div>
+
+        {/* Two Main Panels */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          {/* ✅ Monthly Income Overview */}
+          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg"> 
+            <h2 className="text-2xl font-semibold mb-4 border-b pb-2 dark:border-gray-700">
+              Monthly Income Overview
+            </h2>
+            <p className="text-4xl font-extrabold text-indigo-600 dark:text-indigo-400">
+              ₹{financialStats.totalMonthlyIncome.toLocaleString('en-IN')}
             </p>
-          )}
+            <p className="text-gray-500 mt-2 dark:text-gray-400">
+              Revenue collected this month (Cash Only)
+            </p>
+
+            {/* ✅ PDF Export Component */}
+            <ReportExporter stats={stats} />
+          </div>
+
+          {/* 🔔 Upcoming Renewals */}
+          <div className="bg-orange-100 dark:bg-orange-900/30 p-6 rounded-lg shadow-lg border-l-4 border-orange-500">
+            <h2 className="text-2xl font-semibold mb-4 text-orange-800 dark:text-orange-400">
+              Alerts: Upcoming Renewals
+            </h2>
+            {alerts.upcomingRenewals.length > 0 ? (
+              <ul className="space-y-3">
+                {alerts.upcomingRenewals.slice(0, 3).map(alert => (
+                  <li key={alert.memberId} className="p-3 bg-white dark:bg-gray-700 rounded-md shadow-sm text-gray-700 dark:text-gray-200">
+                    <p className="font-medium">{alert.name} ({alert.memberId})</p>
+                    <p className="text-sm text-orange-500">
+                      Due: {new Date(alert.renewalDate).toDateString()} (WhatsApp Alert Sent)
+                    </p>
+                  </li>
+                ))}
+                {alerts.upcomingRenewals.length > 3 && (
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    +{alerts.upcomingRenewals.length - 3} more...
+                  </p>
+                )}
+              </ul>
+            ) : (
+              <p className="text-gray-600 dark:text-gray-400">
+                No renewals due in the next 7 days. Good job!
+              </p>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    
   );
 };
 
