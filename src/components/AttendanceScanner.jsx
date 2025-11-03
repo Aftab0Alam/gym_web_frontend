@@ -1,10 +1,13 @@
-// src/components/AttendanceScanner.jsx
+// ✅ src/components/AttendanceScanner.jsx
+
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useTheme } from '../contexts/ThemeContext';
 
-const SCAN_API_URL = 'http://localhost:5000/api/attendance/scan';
-const HISTORY_API_URL = 'http://localhost:5000/api/attendance/history';
+// ✅ Added lines (for environment-based URL)
+const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const SCAN_API_URL = `${BASE_URL}/api/attendance/scan`;
+const HISTORY_API_URL = `${BASE_URL}/api/attendance/history`;
 
 const AttendanceScanner = () => {
   const { theme } = useTheme();
@@ -20,10 +23,8 @@ const AttendanceScanner = () => {
     try {
       const res = await axios.get(HISTORY_API_URL);
 
-      // 🔍 Debug log (backend response देखने के लिए)
       console.log("🟢 [DEBUG] Attendance history raw response:", res.data);
 
-      // Handle both array or object responses
       const data = Array.isArray(res.data)
         ? res.data
         : res.data.history || [];
@@ -65,7 +66,6 @@ const AttendanceScanner = () => {
     try {
       const res = await axios.post(SCAN_API_URL, { memberId });
 
-      // 🔍 Debug log for scan success
       console.log("🟢 [DEBUG] Scan success response:", res.data);
 
       setResponse({
@@ -74,13 +74,11 @@ const AttendanceScanner = () => {
         memberName: res.data.member.name,
       });
 
-      // ✅ Refresh history after check-in
       fetchHistory();
     } catch (error) {
       const status = error.response?.status;
       const data = error.response?.data;
 
-      // 🔴 Debug log for scan error
       console.log("🔴 [DEBUG] Scan error response:", data);
 
       let statusType = 'error';
